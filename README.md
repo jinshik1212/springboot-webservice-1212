@@ -48,3 +48,20 @@
       : 스프링부트가 기본적으로 src/main/resoures/static 하위 위치한 javascript, css, 이미지 등 정적파일 URL 에서 / 로 설정
       
 7. 전체 조회 화면 만들기    
+   - index.mustache UI 변경
+     . 출력영역 추가 : {{#posts}} 하위 {{id}}, {{title}} 등 
+   - PostsRepository 인터페이스에 조회 쿼리 추가
+     . @Query("SELECT p FROM Posts p ORDER BY p.id DESC") --> findAllDesc();
+   - PostsService 에 해당 메소드 추가
+     . postsRepository 결과 Posts 의 Stream 을 map 을 통해 PostsListResponseDto 로 변환하여 List 로 리턴함
+   - PostsListResponseDto 추가
+
+8. 게시글 수정, 삭제
+   - PostsApiController 에 수정 API 이미 만듦(update)
+   - posts-update.mustache 파일 생성({{post.title}}, {{post.content}} 수정 가능하며, "btn-update" 수정완료 버튼)
+   - 눌렀을 때 API 로 전달할 js 에 내용 추가(index.js)
+     . 'click' 이벤트 발생 시, this.update(); 수행
+   - index.mustache 파일에서 수정 페이지로 이동할 수 있도록 수정 (title 에 a href 추가)
+   - IndexController.java 에 update 메소드 추가
+     . @GetMApping("/posts/update/{id}")
+       : "post" 에 dto 로 model.addAttribute 추가 후, "posts-update" 리턴 (posts-update.mustache 호출)
